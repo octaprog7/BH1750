@@ -9,10 +9,10 @@ class BaseSensor:
         self.address = address
 
     def get_id(self):
-        pass
+        raise NotImplementedError
 
     def soft_reset(self):
-        pass
+        raise NotImplementedError
 
 
 class Iterator:
