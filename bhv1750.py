@@ -1,4 +1,5 @@
-import base_sensor
+from sensor_pack import base_sensor
+import sys
 import ustruct
 
 
@@ -10,7 +11,7 @@ class Bhv1750(base_sensor.BaseSensor, base_sensor.Iterator):
 
     def _send_cmd(self, command: int):
         """send 1 byte command to device"""
-        self.adapter.write(self.address, command.to_bytes(1, "little"))
+        self.adapter.write(self.address, command.to_bytes(1, sys.byteorder))
 
     def get_id(self):
         """No ID support in sensor!"""
