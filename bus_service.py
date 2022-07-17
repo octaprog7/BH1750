@@ -3,35 +3,30 @@
 # Copyright (c) 2022 Roman Shevchik   goctaprog@gmail.com
 """service class for I/O bus operation"""
 
-from abc import ABC, abstractmethod
 from machine import I2C
 
 
-class BusAdapter(ABC):
+class BusAdapter:
     """Proxy between I/O bus and device I/O class"""
     def __init__(self, bus):
         self.bus = bus
 
-    @abstractmethod
     def read_register(self, device_addr: int, reg_addr: int, bytes_count: int = 2):
         """считывает из регистра датчика значение.
         bytes_count - размер значения в байтах"""
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
     def write_register(self, device_addr: int, reg_addr: int, value: int,
                        bytes_count: int = 2, byte_order: str = "big"):
         """записывает данные value в датчик, по адресу reg_addr.
         bytes_count - кол-во записываемых данных"""
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
     def read(self, device_addr, n_bytes: int) -> bytes:
-        pass
+        raise NotImplementedError
 
-    @abstractmethod
     def write(self, device_addr, buf: bytes):
-        pass
+        raise NotImplementedError
 
 
 class I2cAdapter(BusAdapter):

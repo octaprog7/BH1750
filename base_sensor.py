@@ -1,19 +1,23 @@
-from abc import ABC, abstractmethod
-
 from bus_service import BusAdapter
 
 
-class BaseSensor(ABC):
+class BaseSensor:
     """Base sensor class"""
 
     def __init__(self, adapter: BusAdapter, address: int):
         self.adapter = adapter
         self.address = address
 
-    @abstractmethod
     def get_id(self):
         pass
 
-    @abstractmethod
     def soft_reset(self):
         pass
+
+
+class Iterator:
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        raise NotImplementedError
