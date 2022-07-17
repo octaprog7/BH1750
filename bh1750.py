@@ -3,7 +3,7 @@ import sys
 import ustruct
 
 
-class Bhv1750(BaseSensor, Iterator):
+class Bh1750(BaseSensor, Iterator):
     """Class for work with ambient Light Sensor BHV1750"""
 
     def __del__(self):

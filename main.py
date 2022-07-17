@@ -5,7 +5,7 @@
 
 # Please read this before use!: https://www.ti.com/product/TMP117
 from machine import I2C
-import bhv1750
+import bh1750
 from sensor_pack.bus_service import I2cAdapter
 import time
 
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     i2c = I2C(0, freq=400_000)  # on Arduino Nano RP2040 Connect tested
     adaptor = I2cAdapter(i2c)
     # ps - pressure sensor
-    sol = bhv1750.Bhv1750(adaptor, 0x23)
+    sol = bh1750.Bh1750(adaptor, 0x23)
 
     # если у вас посыпались исключения, чего у меня на макетной плате с али и проводами МГТВ не наблюдается,
     # то проверьте все соединения.
@@ -29,5 +29,5 @@ if __name__ == '__main__':
     
     for lux in sol:
         time.sleep_ms(150)
-        curr_max=max(lux, curr_max)
+        curr_max = max(lux, curr_max)
         print(f"Current illumination [lux]: {lux}\tNormalized [%]: {int(100*lux/curr_max)}")
