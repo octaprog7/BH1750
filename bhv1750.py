@@ -5,6 +5,9 @@ import ustruct
 class Bhv1750(base_sensor.BaseSensor, base_sensor.Iterator):
     """Class for work with ambient Light Sensor BHV1750"""
 
+    def __del__(self):
+        self.power(False)   # power off before delete
+
     def _send_cmd(self, command: int):
         """send 1 byte command to device"""
         self.adapter.write(self.address, command.to_bytes(1, "little"))
