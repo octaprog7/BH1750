@@ -6,7 +6,7 @@
 # Please read this before use!: https://www.ti.com/product/TMP117
 from machine import I2C
 import bhv1750
-import bus_service
+from sensor_pack import bus_service
 import time
 
 if __name__ == '__main__':
