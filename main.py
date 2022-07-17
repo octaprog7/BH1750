@@ -28,9 +28,6 @@ if __name__ == '__main__':
     curr_max = 0
     
     for lux in sol:
-        time.sleep_ms(300)
+        time.sleep_ms(150)
         curr_max=max(lux, curr_max)
         print(f"Current illumination [lux]: {lux}\tNormalized [%]: {int(100*lux/curr_max)}")
-        
-
-    sol.power(False)
