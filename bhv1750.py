@@ -1,9 +1,9 @@
-from sensor_pack import base_sensor
+from sensor_pack.base_sensor import BaseSensor, Iterator
 import sys
 import ustruct
 
 
-class Bhv1750(base_sensor.BaseSensor, base_sensor.Iterator):
+class Bhv1750(BaseSensor, Iterator):
     """Class for work with ambient Light Sensor BHV1750"""
 
     def __del__(self):

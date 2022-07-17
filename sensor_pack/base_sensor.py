@@ -1,10 +1,10 @@
-from bus_service import BusAdapter
+from sensor_pack import bus_service
 
 
 class BaseSensor:
     """Base sensor class"""
 
-    def __init__(self, adapter: BusAdapter, address: int):
+    def __init__(self, adapter: bus_service.BusAdapter, address: int):
         self.adapter = adapter
         self.address = address
 

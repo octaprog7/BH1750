@@ -6,7 +6,7 @@
 # Please read this before use!: https://www.ti.com/product/TMP117
 from machine import I2C
 import bhv1750
-from sensor_pack import bus_service
+from sensor_pack.bus_service import I2cAdapter
 import time
 
 if __name__ == '__main__':
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # i2c = I2C(0, scl=Pin(13), sda=Pin(12), freq=400_000) № для примера
     # bus =  I2C(scl=Pin(4), sda=Pin(5), freq=100000)   # на esp8266    !
     i2c = I2C(0, freq=400_000)  # on Arduino Nano RP2040 Connect tested
-    adaptor = bus_service.I2cAdapter(i2c)
+    adaptor = I2cAdapter(i2c)
     # ps - pressure sensor
     sol = bhv1750.Bhv1750(adaptor, 0x23)
 
