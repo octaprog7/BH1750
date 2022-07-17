@@ -25,9 +25,12 @@ if __name__ == '__main__':
     # Радиотехника - наука о контактах! РТФ-Чемпион!
     sol.power(True)     # Sensor Of Lux
     sol.set_mode(True, True)
-
+    curr_max = 0
+    
     for lux in sol:
         time.sleep_ms(300)
-        print(f"Current illumination [lux]: {lux}")
+        curr_max=max(lux, curr_max)
+        print(f"Current illumination [lux]: {lux}\tNormalized [%]: {int(100*lux/curr_max)}")
+        
 
     sol.power(False)
