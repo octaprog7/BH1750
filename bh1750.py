@@ -1,4 +1,5 @@
 from sensor_pack.base_sensor import BaseSensor, Iterator
+# from ..sensor_pack.base_sensor import BaseSensor, Iterator
 import sys
 import ustruct
 
@@ -28,7 +29,7 @@ class Bh1750(BaseSensor, Iterator):
         else:
             self._send_cmd(0b0000_0000)
 
-    def set_mode(self, continuously: bool, high_resolution: bool = True):
+    def set_mode(self, continuously: bool = True, high_resolution: bool = True):
         """Set sensor mode.
         high resolution mode 2 not implemented. I have no desire to do this!"""
         if continuously:
