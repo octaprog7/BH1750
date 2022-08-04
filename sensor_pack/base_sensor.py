@@ -1,11 +1,10 @@
-import bus_service
-from machine import Pin
-from typing import Union
+from sensor_pack import bus_service
 
 
 class BaseSensor:
     """Base sensor class"""
-    def __init__(self, adapter: bus_service.BusAdapter, address: Union[int, Pin]):
+
+    def __init__(self, adapter: bus_service.BusAdapter, address: int):
         self.adapter = adapter
         self.address = address
 
@@ -17,7 +16,6 @@ class BaseSensor:
 
 
 class Iterator:
-    """Для поддержки получения данных от датчика с помощью итератора"""
     def __iter__(self):
         return self
 
