@@ -1,5 +1,4 @@
 from sensor_pack.base_sensor import BaseSensor, Iterator
-# from ..sensor_pack.base_sensor import BaseSensor, Iterator
 import sys
 import ustruct
 
