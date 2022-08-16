@@ -1,3 +1,6 @@
+# micropython
+# MIT license
+# Copyright (c) 2022 Roman Shevchik   goctaprog@gmail.com
 from sensor_pack import bus_service
 
 
