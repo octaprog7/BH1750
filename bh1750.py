@@ -1,5 +1,4 @@
 from sensor_pack.base_sensor import BaseSensor, Iterator
-import sys
 import ustruct
 
 
@@ -11,7 +10,8 @@ class Bh1750(BaseSensor, Iterator):
 
     def _send_cmd(self, command: int):
         """send 1 byte command to device"""
-        self.adapter.write(self.address, command.to_bytes(1, sys.byteorder))
+        bo = self._get_byteorder_as_str()[0]    # big, little
+        self.adapter.write(self.address, command.to_bytes(1, bo))
 
     def get_id(self):
         """No ID support in sensor!"""
@@ -44,7 +44,7 @@ class Bh1750(BaseSensor, Iterator):
     def get_illumination(self) -> int:
         """Return illumination in lux"""
         tmp = self.adapter.read(self.address, 2)
-        return int(ustruct.unpack(">H", tmp)[0])
+        return self.unpack("H", tmp)[0]     # .unpack(">H", tmp)[0])
 
     def __next__(self) -> int:
         return self.get_illumination()
