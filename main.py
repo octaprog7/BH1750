@@ -18,7 +18,7 @@ if __name__ == '__main__':
     i2c = I2C(0, freq=400_000)  # on Arduino Nano RP2040 Connect tested
     adaptor = I2cAdapter(i2c)
     # ps - pressure sensor
-    sol = bh1750.Bh1750(adaptor, 0x23, False)
+    sol = bh1750.Bh1750(adaptor, 0x23, True)
 
     # если у вас посыпались исключения, чего у меня на макетной плате с али и проводами МГТВ не наблюдается,
     # то проверьте все соединения.
