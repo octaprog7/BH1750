@@ -20,15 +20,19 @@ class BaseSensor:
         self.address = address
         self.big_byte_order = big_byte_order
 
+    def _get_byteorder_as_str(self) -> tuple:
+        """Return byteorder as string"""
+        if self.is_big_byteorder():
+            return 'big', '>'
+        else:
+            return 'little', '<'
+
     def unpack(self, fmt_char: str, source: bytes) -> tuple:
         """распаковка массива, считанного из датчика.
         fmt_char: c, b, B, h, H, i, I, l, L, q, Q. pls see: https://docs.python.org/3/library/struct.html"""
         if len(fmt_char) != 1:
             raise ValueError(f"Invalid length fmt_char parameter: {len(fmt_char)}")
-        if self.is_big_byteorder():
-            bo = ">"    # 'big'
-        else:
-            bo = "<"  # 'little'
+        bo = self._get_byteorder_as_str()[1]
         return ustruct.unpack(bo + fmt_char, source)
 
     @micropython.native
