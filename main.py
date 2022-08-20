@@ -31,4 +31,5 @@ if __name__ == '__main__':
         time.sleep_ms(150)
         curr_max = max(lux, curr_max)
         if lux != curr_max:
-            print(f"Current illumination [lux]: {lux}\tNormalized [%]: {100*lux/curr_max}")
+            lt = time.localtime()
+            print(f"{lt[3]}:{lt[4]}:{lt[5]}: current illumination [lux]: {lux}\tNormalized [%]: {100*lux/curr_max}")
