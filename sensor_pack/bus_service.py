@@ -11,13 +11,13 @@ class BusAdapter:
     def __init__(self, bus):
         self.bus = bus
 
-    def read_register(self, device_addr: int, reg_addr: int, bytes_count: int = 2):
+    def read_register(self, device_addr: int, reg_addr: int, bytes_count: int) -> bytes:
         """считывает из регистра датчика значение.
         bytes_count - размер значения в байтах"""
         raise NotImplementedError
 
     def write_register(self, device_addr: int, reg_addr: int, value: int,
-                       bytes_count: int = 2, byte_order: str = "big"):
+                       bytes_count: int, byte_order: str):
         """записывает данные value в датчик, по адресу reg_addr.
         bytes_count - кол-во записываемых данных"""
         raise NotImplementedError
@@ -34,13 +34,13 @@ class I2cAdapter(BusAdapter):
         super().__init__(bus)
 
     def write_register(self, device_addr: int, reg_addr: int, value: int,
-                       bytes_count: int = 2, byte_order: str = "big"):
+                       bytes_count: int, byte_order: str):
         """записывает данные value в датчик, по адресу reg_addr.
         bytes_count - кол-во записываемых данных"""
         buf = value.to_bytes(bytes_count, byte_order)
         return self.bus.writeto_mem(device_addr, reg_addr, buf)
 
-    def read_register(self, device_addr: int, reg_addr: int, bytes_count: int = 2):
+    def read_register(self, device_addr: int, reg_addr: int, bytes_count: int) -> bytes:
         """считывает из регистра датчика значение.
         bytes_count - размер значения в байтах"""
         return self.bus.readfrom_mem(device_addr, reg_addr, bytes_count)
