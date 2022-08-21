@@ -10,12 +10,15 @@ class BaseSensor:
     """Base sensor class"""
 
     def __init__(self, adapter: bus_service.BusAdapter, address: int, big_byte_order: bool):
-        """Базовый класс Датчик. если big_byte_order равен True -> порядок байтов в регистрах «big»
+        """Базовый класс Датчик.
+        Если big_byte_order равен True -> порядок байтов в регистрах датчика «big»
         (Порядок от старшего к младшему), в противном случае порядок байтов в регистрах "little"
         (Порядок от младшего к старшему)
+        address - адрес датчика на шине.
 
         Base sensor class. if big_byte_order is True -> register values byteorder is 'big'
-        else register values byteorder is 'little' """
+        else register values byteorder is 'little'
+        address - address of the sensor on the bus."""
         self.adapter = adapter
         self.address = address
         self.big_byte_order = big_byte_order
