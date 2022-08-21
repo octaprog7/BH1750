@@ -13,13 +13,23 @@ class BusAdapter:
 
     def read_register(self, device_addr: int, reg_addr: int, bytes_count: int) -> bytes:
         """считывает из регистра датчика значение.
-        bytes_count - размер значения в байтах"""
+        device_addr - адрес датчика на шине.
+        reg_addr - адрес регистра в адресном пространстве датчика.
+        bytes_count - размер значения в байтах.
+        reads value from sensor register.
+        device_addr - address of the sensor on the bus.
+        reg_addr - register address in the address space of the sensor"""
         raise NotImplementedError
 
     def write_register(self, device_addr: int, reg_addr: int, value: int,
                        bytes_count: int, byte_order: str):
         """записывает данные value в датчик, по адресу reg_addr.
-        bytes_count - кол-во записываемых данных"""
+        bytes_count - кол-во записываемых байт из value.
+        byte_order - порядок расположения байт в записываемом значении.
+        writes value data to the sensor, at reg_addr.
+        bytes_count - number of bytes written from value.
+        byte_order - the order of bytes in the value being written.
+        """
         raise NotImplementedError
 
     def read(self, device_addr, n_bytes: int) -> bytes:
