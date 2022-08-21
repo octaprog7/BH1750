@@ -3,7 +3,8 @@ import ustruct
 
 
 class Bh1750(BaseSensor, Iterator):
-    """Class for work with ambient Light Sensor BH1750"""
+    """Class for work with ambient Light Sensor BH1750.
+    https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf"""
 
     def __del__(self):
         self.power(False)   # power off before delete
