@@ -3,7 +3,7 @@
 # MIT license
 
 
-# Please read this before use!: https://www.ti.com/product/TMP117
+# Please read this before use!: https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf
 from machine import I2C
 import bh1750
 from sensor_pack.bus_service import I2cAdapter
