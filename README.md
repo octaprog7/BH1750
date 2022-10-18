@@ -15,6 +15,6 @@ Then open main.py in your IDE and run it.
 
 # Pictures
 ## IDE
-![alt text](https://github.com/octaprog7/BHV1750/blob/master/ide1750.png)
+![alt text](https://github.com/octaprog7/BH1750/blob/master/ide1750.png)
 ## Breadboard
-![alt text](https://github.com/octaprog7/BHV1750/blob/master/bh1750board.jpg)
+![alt text](https://github.com/octaprog7/BH1750/blob/master/bh1750board.jpg)
