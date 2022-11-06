@@ -67,11 +67,13 @@ class Bh1750(BaseSensor, Iterator):
         return self.get_illumination()
 
     def get_conversion_cycle_time(self, max_value: bool = False) -> int:
-        """Возвращает время преобразования в [мс] датчиком температуры или давления в зависимости от его настроек.
+        """Возвращает время преобразования в [мс] датчиком в зависимости от его настроек.
         Если max_value == True, метод возвращает наибольшее значение (для особо плохих датчиков из партии),
         иначе типовое. Смотри BH1750FVI Technical Note,
         Electrical Characteristics ( V CC = 3.0V, DVI = 3.0V, Ta = 25℃, unless otherwise noted )
-        Returns the conversion time in [ms] by a temperature or pressure sensor depending on its settings."""
+        Returns the conversion time in [ms] by the sensor depending on its settings.
+        If max_value == True, the method returns the largest value (for particularly bad sensors from the batch),
+        otherwise it returns a typical value."""
         offs = 2 * int(self._high_resolution) + int(max_value)
         # low resolution:   16, 24
         # hi resolution:    120, 180
@@ -93,6 +95,8 @@ class Bh1750(BaseSensor, Iterator):
 
     @property
     def measurement_accuracy(self) -> float:
+        """Значение из datasheet в диапазоне от 0.96 до 1.44.
+        Value from the datasheet in the range from 0.96 to 1.44."""
         return self._measurement_accuracy
 
     @measurement_accuracy.setter
