@@ -27,6 +27,7 @@ if __name__ == '__main__':
     # Радиотехника - наука о контактах! РТФ-Чемпион!
     sol.power(on=True)     # Sensor Of Lux
     sol.set_mode(continuously=True, high_resolution=True)
+    sol.measurement_accuracy = 1.0      # default value
     old_lux = curr_max = 1.0
     
     for lux in sol:
