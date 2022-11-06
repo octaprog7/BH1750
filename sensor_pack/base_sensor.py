@@ -6,19 +6,26 @@ import ustruct
 from sensor_pack import bus_service
 
 
-class BaseSensor:
-    """Base sensor class"""
+@micropython.native
+def check_value(value: int, valid_range, error_msg: str) -> int:
+    if value not in valid_range:
+        raise ValueError(error_msg)
+    return value
+
+
+class Device:
+    """Base device class"""
 
     def __init__(self, adapter: bus_service.BusAdapter, address: int, big_byte_order: bool):
-        """Базовый класс Датчик.
-        Если big_byte_order равен True -> порядок байтов в регистрах датчика «big»
+        """Базовый класс Устройство.
+        Если big_byte_order равен True -> порядок байтов в регистрах устройства «big»
         (Порядок от старшего к младшему), в противном случае порядок байтов в регистрах "little"
         (Порядок от младшего к старшему)
-        address - адрес датчика на шине.
+        address - адрес устройства на шине.
 
-        Base sensor class. if big_byte_order is True -> register values byteorder is 'big'
+        Base device class. if big_byte_order is True -> register values byteorder is 'big'
         else register values byteorder is 'little'
-        address - address of the sensor on the bus."""
+        address - address of the device on the bus."""
         self.adapter = adapter
         self.address = address
         self.big_byte_order = big_byte_order
@@ -30,18 +37,24 @@ class BaseSensor:
         else:
             return 'little', '<'
 
-    def unpack(self, fmt_char: str, source: bytes) -> tuple:
+    def unpack(self, fmt_char: str, source: bytes, redefine_byte_order: str = None) -> tuple:
         """распаковка массива, считанного из датчика.
+        Если redefine_byte_order != None, то bo (смотри ниже) = redefine_byte_order
         fmt_char: c, b, B, h, H, i, I, l, L, q, Q. pls see: https://docs.python.org/3/library/struct.html"""
-        if len(fmt_char) != 1:
+        if not fmt_char:
             raise ValueError(f"Invalid length fmt_char parameter: {len(fmt_char)}")
         bo = self._get_byteorder_as_str()[1]
+        if redefine_byte_order is not None:
+            bo = redefine_byte_order[0]
         return ustruct.unpack(bo + fmt_char, source)
 
     @micropython.native
     def is_big_byteorder(self) -> bool:
         return self.big_byte_order
 
+
+class BaseSensor(Device):
+    """Base sensor class"""
     def get_id(self):
         raise NotImplementedError
 

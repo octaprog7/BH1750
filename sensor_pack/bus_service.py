@@ -21,7 +21,7 @@ class BusAdapter:
         reg_addr - register address in the address space of the sensor"""
         raise NotImplementedError
 
-    def write_register(self, device_addr: int, reg_addr: int, value: int,
+    def write_register(self, device_addr: int, reg_addr: int, value: [int, bytes, bytearray],
                        bytes_count: int, byte_order: str):
         """записывает данные value в датчик, по адресу reg_addr.
         bytes_count - кол-во записываемых байт из value.
@@ -43,11 +43,17 @@ class I2cAdapter(BusAdapter):
     def __init__(self, bus: I2C):
         super().__init__(bus)
 
-    def write_register(self, device_addr: int, reg_addr: int, value: int,
+    def write_register(self, device_addr: int, reg_addr: int, value: [int, bytes, bytearray],
                        bytes_count: int, byte_order: str):
         """записывает данные value в датчик, по адресу reg_addr.
-        bytes_count - кол-во записываемых данных"""
-        buf = value.to_bytes(bytes_count, byte_order)
+        bytes_count - кол-во записываемых данных
+        value - должно быть типов int, bytes, bytearray"""
+        buf = None
+        if isinstance(value, int):
+            buf = value.to_bytes(bytes_count, byte_order)
+        if isinstance(value, (bytes, bytearray)):
+            buf = value
+
         return self.bus.writeto_mem(device_addr, reg_addr, buf)
 
     def read_register(self, device_addr: int, reg_addr: int, bytes_count: int) -> bytes:
@@ -57,6 +63,20 @@ class I2cAdapter(BusAdapter):
 
     def read(self, device_addr, n_bytes: int) -> bytes:
         return self.bus.readfrom(device_addr, n_bytes)
+    
+    def read_buf_from_mem(self, device_addr, mem_addr, buf):
+        """Читает из устройства с адресом device_addr в буфер buf, начиная с адреса в устройстве mem_addr.
+        Количество считываемых байт определяется длинной буфера buf.
+        Reads from device address device_addr into buf, starting at the address in device mem_addr.
+        The number of bytes read is determined by the length of the buffer buf"""
+        return self.bus.readfrom_mem_into(device_addr, mem_addr, buf)
 
     def write(self, device_addr, buf: bytes):
         return self.bus.writeto(device_addr, buf)
+
+    def write_buf_to_mem(self, device_addr, mem_addr, buf):
+        """Записывает в устройство с адресом device_addr все байты из буфера buf.
+        Запись начинается с адреса в устройстве: mem_addr.
+        Writes to device address device_addr all the bytes in buf.
+        The entry starts at an address in the device: mem_addr."""
+        return self.bus.writeto_mem(device_addr, mem_addr, buf)
