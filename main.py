@@ -23,7 +23,8 @@ if __name__ == '__main__':
     adaptor = I2cAdapter(i2c)
     sol = bh1750.Bh1750(adaptor)
 
-    # если у вас посыпались исключения, то проверьте все соединения.
+    # если у вас посыпались исключения EIO, то проверьте все соединения.
+    # if you get EIO exceptions, then check all connections.
     # Радиотехника - наука о контактах! РТФ-Чемпион!
     sol.power(on=True)     # Sensor Of Lux
     sol.set_mode(continuously=True, high_resolution=True)
