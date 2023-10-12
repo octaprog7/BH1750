@@ -12,6 +12,7 @@ class Bh1750(BaseSensor, Iterator):
         adapter - an instance of the bus_service.BusAdapter class. Must be created before calling this constructor.
         address - device address on the I2C bus."""
         super().__init__(adapter, address, big_byte_order=True)
+        self._buf_2 = bytearray((0 for _ in range(2)))  # для хранения
         self._high_resolution = False
         self._continuously = False
         # typical measurement_accuracy is 1.2 (from 0.96 to 1.44 times). Pls. see Measurement Accuracy in datasheet!
@@ -59,9 +60,10 @@ class Bh1750(BaseSensor, Iterator):
         Return illumination in lux. use_measurement_accuracy.
         Parameter measurement_accuracy is defined in datasheet.
         However, it can be ignored, since it is close to 1.0, from 0.96 to 1.44!"""
-        tmp = self.adapter.read(self.address, 2)
+        buf = self._buf_2
+        self.adapter.bus.readfrom_into(self.address, buf)       # tmp = self.adapter.read(self.address, 2)
         # typical measurement_accuracy is 1.2 (from 0.96 to 1.44 times). Pls. see Measurement Accuracy in datasheet!
-        return self.unpack("H", tmp)[0] / self._measurement_accuracy
+        return self.unpack("H", buf)[0] / self._measurement_accuracy
 
     def __next__(self) -> float:
         return self.get_illumination()
