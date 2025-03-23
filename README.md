@@ -19,4 +19,5 @@ Then open main.py in your IDE and run it.
 ## Breadboard
 ![alt text](https://github.com/octaprog7/BH1750/blob/master/bh1750board.jpg)
 
+## Note
 If you liked my software, please be generous and give it a star!
