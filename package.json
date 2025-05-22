@@ -1,0 +1,10 @@
+{
+  "urls": [
+    ["bh1750.py", "github:octaprog7/BH1750/bh1750.py"],
+    ["sensor_pack/__init__.py", "github:octaprog7/BH1750/sensor_pack/__init__.py"],
+    ["sensor_pack/base_sensor.py", "github:octaprog7/BH1750/sensor_pack/base_sensor.py"],
+    ["sensor_pack/bus_service.py", "github:octaprog7/BH1750/sensor_pack/bus_service.py"]
+  ],
+  "version": "1.0.0",
+  "deps": []
+}
