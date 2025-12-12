@@ -1,11 +1,8 @@
 # micropython
-# mail: goctaprog@gmail.com
 # MIT license
 
-
-# Please read this before use!: https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf
 from machine import I2C
-import bh1750
+from bh1750mod import Bh1750
 from sensor_pack.bus_service import I2cAdapter
 import time
 
@@ -21,7 +18,7 @@ if __name__ == '__main__':
     # Replace id=1 with id=0 if you are using the first I2C port !!!
     i2c = I2C(id=1, freq=400_000)  # on Arduino Nano RP2040 Connect tested
     adaptor = I2cAdapter(i2c)
-    sol = bh1750.Bh1750(adaptor)
+    sol = Bh1750(adaptor)
 
     # если у вас посыпались исключения EIO, то проверьте все соединения.
     # if you get EIO exceptions, then check all connections.
