@@ -1,25 +1,31 @@
+from micropython import const
 from sensor_pack import bus_service
 from sensor_pack.base_sensor import BaseSensor, Iterator
 
 
 class Bh1750(BaseSensor, Iterator):
-    """Class for work with ambient Light Sensor BH1750.
-    https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf"""
+    """Class for work with ambient Light Sensor BH1750."""
+    # постоянные
+    CMD_SOFT_RESET = const(0b0000_0111)
+    CMD_CONTINUOUSLY_MODE = const(0b0001_0000)  # continuously mode
+    CMD_ONE_SHOT_MODE = const(0b0010_0000) # one shot mode
+    CMD_POWER_ON = const(0b0000_0001)
+    CMD_POWER_OFF = const(0b0000_0000)
 
     def __init__(self, adapter: bus_service.BusAdapter, address: int = 0x23):
-        """adapter - экземпляр класса bus_service.BusAdapter. Должен быть создан до вызова этого контсруктора.
+        """adapter - экземпляр класса bus_service.BusAdapter. Должен быть создан до вызова этого конструктора.
         address - адрес устройства на шине I2C.
         adapter - an instance of the bus_service.BusAdapter class. Must be created before calling this constructor.
         address - device address on the I2C bus."""
         super().__init__(adapter, address, big_byte_order=True)
-        self._buf_2 = bytearray((0 for _ in range(2)))  # для хранения
+        self._buf_2 = bytearray(2)  # для хранения
         self._high_resolution = False
         self._continuously = False
         # typical measurement_accuracy is 1.2 (from 0.96 to 1.44 times). Pls. see Measurement Accuracy in datasheet!
         self._measurement_accuracy = 1.0
 
     def __del__(self):
-        self.power(False)   # power off before delete
+        self.set_power(False)   # power off before delete
 
     def _send_cmd(self, command: int):
         """send 1 byte command to device"""
@@ -32,19 +38,19 @@ class Bh1750(BaseSensor, Iterator):
 
     def soft_reset(self):
         """Software reset."""
-        self._send_cmd(0b0000_0111)
+        self._send_cmd(Bh1750.CMD_SOFT_RESET)
 
-    def power(self, on: bool = True):
+    def set_power(self, on: bool = True):
         """Sensor powering"""
-        self._send_cmd(0b0000_0001 if on else 0b0000_0000)
+        self._send_cmd(Bh1750.CMD_POWER_ON if on else Bh1750.CMD_POWER_OFF)
 
     def set_mode(self, continuously: bool = True, high_resolution: bool = True):
         """Set sensor mode.
         high resolution mode 2 not implemented. I have no desire to do this!"""
         if continuously:
-            cmd = 0b0001_0000  # continuously mode
+            cmd = Bh1750.CMD_CONTINUOUSLY_MODE  # continuously mode
         else:
-            cmd = 0b0010_0000  # one shot mode
+            cmd = Bh1750.CMD_ONE_SHOT_MODE # one shot mode
 
         if not high_resolution:
             cmd |= 0b11    # L-Resolution Mode
@@ -54,7 +60,7 @@ class Bh1750(BaseSensor, Iterator):
         self._high_resolution = high_resolution
         self._continuously = continuously
 
-    def get_illumination(self) -> float:
+    def get_illumination(self, raw: bool = False) -> float | int:
         """Возвращает освещенность в люксах. Параметр measurement_accuracy определен в datasheet.
         Впрочем, его можно не учитывать, так, как он близок к единице, от 0.96 до 1.44!
         Return illumination in lux. use_measurement_accuracy.
@@ -63,7 +69,10 @@ class Bh1750(BaseSensor, Iterator):
         buf = self._buf_2
         self.adapter.bus.readfrom_into(self.address, buf)       # tmp = self.adapter.read(self.address, 2)
         # typical measurement_accuracy is 1.2 (from 0.96 to 1.44 times). Pls. see Measurement Accuracy in datasheet!
-        return self.unpack("H", buf)[0] / self._measurement_accuracy
+        _raw = self.unpack("H", buf)[0]
+        if raw:
+            return _raw
+        return _raw / self._measurement_accuracy
 
     def __next__(self) -> float:
         return self.get_illumination()
